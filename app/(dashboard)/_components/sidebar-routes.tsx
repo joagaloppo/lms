@@ -2,7 +2,8 @@
 
 import SidebarItem from "./sidebar-item";
 
-import { Layout, Compass } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { Layout, Compass, List, BarChart } from "lucide-react";
 
 const guestRoutes = [
     {
@@ -17,8 +18,24 @@ const guestRoutes = [
     },
 ];
 
+const teacherRoutes = [
+    {
+        icon: List,
+        label: "Courses",
+        href: "/teacher/courses",
+    },
+    {
+        icon: BarChart,
+        label: "Analytics",
+        href: "/teacher/analytics",
+    },
+];
+
 const SidebarRoutes: React.FC = () => {
-    const routes = guestRoutes;
+    const pathname = usePathname();
+    const router = useRouter();
+
+    const routes = pathname?.startsWith("/teacher") ? teacherRoutes : guestRoutes;
 
     return (
         <div className="flex flex-col w-full">
