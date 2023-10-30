@@ -5,13 +5,7 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = () => {
-    return (
-        <>
-            <div>
-                <UserButton afterSignOutUrl="/login" />
-            </div>
-        </>
-    );
+    return <div>Dashboard page...</div>;
 };
 
 export default Home;
