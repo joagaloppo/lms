@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import TitleForm from "./_components/title-form";
 import DescriptionForm from "./_components/description-form";
 import ImageForm from "./_components/image-form";
+import CategoryForm from "./_components/category-form";
 
 interface PageProps {
     params: {
@@ -24,6 +25,12 @@ const Page: React.FC<PageProps> = async ({ params }) => {
         where: {
             id: params.courseId,
             userId,
+        },
+    });
+
+    const categories = await db.category.findMany({
+        orderBy: {
+            name: "asc",
         },
     });
 
@@ -53,6 +60,11 @@ const Page: React.FC<PageProps> = async ({ params }) => {
                     <TitleForm initialData={course} courseId={course.id} />
                     <DescriptionForm initialData={course} courseId={course.id} />
                     <ImageForm initialData={course} courseId={course.id} />
+                    <CategoryForm
+                        initialData={course}
+                        courseId={course.id}
+                        options={categories.map((category) => ({ label: category.name, value: category.id }))}
+                    />
                 </div>
             </div>
         </div>
