@@ -9,6 +9,7 @@ import ImageForm from "./_components/image-form";
 import CategoryForm from "./_components/category-form";
 import PriceForm from "./_components/price-form";
 import AttachmentForm from "./_components/attachment-form";
+import ChaptersForm from "./_components/chapters-form";
 
 interface PageProps {
     params: {
@@ -18,10 +19,7 @@ interface PageProps {
 
 const Page: React.FC<PageProps> = async ({ params }) => {
     const { userId } = auth();
-
-    if (!userId) {
-        return redirect("/login");
-    }
+    if (!userId) return redirect("/login");
 
     const course = await db.course.findUnique({
         where: {
@@ -29,6 +27,11 @@ const Page: React.FC<PageProps> = async ({ params }) => {
             userId,
         },
         include: {
+            chapters: {
+                orderBy: {
+                    position: "asc",
+                },
+            },
             attachments: {
                 orderBy: {
                     createdAt: "asc",
@@ -37,17 +40,23 @@ const Page: React.FC<PageProps> = async ({ params }) => {
         },
     });
 
+    if (!course) return redirect("/");
+
     const categories = await db.category.findMany({
         orderBy: {
             name: "asc",
         },
     });
 
-    if (!course) {
-        return redirect("/");
-    }
+    const requiredFields = [
+        course.title,
+        course.description,
+        course.imageUrl,
+        course.price,
+        course.categoryId,
+        course.chapters.some((chapter) => chapter.isPublished),
+    ];
 
-    const requiredFields = [course.title, course.description, course.imageUrl, course.price, course.categoryId];
     const totalFields = requiredFields.length;
     const completedFields = requiredFields.filter(Boolean).length;
     const completionText = `(${completedFields}/${totalFields})`;
@@ -81,7 +90,7 @@ const Page: React.FC<PageProps> = async ({ params }) => {
                             <IconBadge icon={ListChecks} />
                             <h2 className="text-xl font-medium">Course chapters</h2>
                         </div>
-                        <PriceForm initialData={course} courseId={course.id} />
+                        <ChaptersForm initialData={course} courseId={course.id} />
                     </div>
                     <div>
                         <div className="flex items-center gap-x-4">
