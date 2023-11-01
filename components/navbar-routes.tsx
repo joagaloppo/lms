@@ -4,6 +4,7 @@ import { UserButton } from "@clerk/nextjs";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Book, User } from "lucide-react";
+import { ClerkLoaded, ClerkLoading } from "@clerk/nextjs";
 
 const NavbarRoutes: React.FC = () => {
     const pathname = usePathname();
@@ -34,7 +35,12 @@ const NavbarRoutes: React.FC = () => {
                     Teacher
                 </Button>
             )}
-            <UserButton afterSignOutUrl="/login" />
+            <ClerkLoading>
+                <div className="h-8 w-8 bg-gray-200 rounded-full" />
+            </ClerkLoading>
+            <ClerkLoaded>
+                <UserButton afterSignOutUrl="/login" />
+            </ClerkLoaded>
         </div>
     );
 };
