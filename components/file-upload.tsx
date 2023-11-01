@@ -12,7 +12,7 @@ interface FileUploadProps {
 const FileUpload: React.FC<FileUploadProps> = ({ onChange, endpoint }) => {
     return (
         <UploadDropzone
-            endpoint="courseImage"
+            endpoint={endpoint}
             onClientUploadComplete={(res) => {
                 onChange(res?.[0].url);
             }}
