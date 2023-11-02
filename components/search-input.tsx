@@ -35,7 +35,7 @@ const SearchInput: React.FC<SearchInputProps> = () => {
         );
 
         router.push(url);
-    }, [debouncedValue, currentSearchQuery, currentCategoryId, router, pathname]);
+    }, [debouncedValue, currentCategoryId, pathname, router]);
 
     return (
         <div className="relative">
