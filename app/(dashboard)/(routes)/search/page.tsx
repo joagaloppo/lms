@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import Categories from "./_components/categories";
+import SearchInput from "@/components/search-input";
 
 interface SearchProps {
     children?: React.ReactNode;
@@ -10,9 +11,14 @@ const Search: React.FC<SearchProps> = async () => {
         orderBy: { name: "asc" },
     });
     return (
-        <div className="p-6">
-            <Categories items={categories} />
-        </div>
+        <>
+            <div className="px-6 pt-6 md:hidden md:mb-0 block">
+                <SearchInput />
+            </div>
+            <div className="p-6">
+                <Categories items={categories} />
+            </div>
+        </>
     );
 };
 
