@@ -5,6 +5,7 @@ import Link from "next/link";
 import IconBadge from "./icon-badge";
 import { BookOpen } from "lucide-react";
 import { formatPrice } from "@/lib/formatPrice";
+import CourseProgress from "./course-progress";
 
 interface CourseCardProps {
     id: string;
@@ -37,7 +38,17 @@ const CourseCard: React.FC<CourseCardProps> = ({ id, title, imageUrl, chaptersLe
                         </div>
                     </div>
 
-                    {progress !== null ? <div>{/* TODO: Progress-bar */}</div> : <p>{formatPrice(price)}</p>}
+                    {progress !== null ? (
+                        <div>
+                            <CourseProgress
+                                size="sm"
+                                variant={progress === 100 ? "success" : "default"}
+                                value={progress}
+                            />
+                        </div>
+                    ) : (
+                        <p>{formatPrice(price)}</p>
+                    )}
                 </div>
             </div>
         </Link>

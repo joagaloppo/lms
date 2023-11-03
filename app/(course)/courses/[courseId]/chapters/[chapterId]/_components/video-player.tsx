@@ -28,6 +28,25 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     completeOnEnd,
 }) => {
     const [isReady, setIsReady] = useState(false);
+    const router = useRouter();
+
+    const onEnd = async () => {
+        try {
+            if (completeOnEnd) {
+                await axios.put(`/api/courses/${courseId}/chapters/${chapterId}/progress`, {
+                    isCompleted: true,
+                });
+
+                if (nextChapterId) router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
+                if (!nextChapterId) router.push(`/`);
+
+                toast.success("Progress updated");
+                router.refresh();
+            }
+        } catch (error) {
+            toast.error("Something went wrong");
+        }
+    };
 
     return (
         <div className="relative aspect-video">
@@ -49,7 +68,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                     title={title}
                     className={cn(!isReady && "hidden")}
                     onCanPlay={() => setIsReady(true)}
-                    onEnded={() => {}}
+                    onEnded={onEnd}
                     autoPlay
                     playbackId={playblackId}
                 />
