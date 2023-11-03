@@ -11,11 +11,7 @@ interface PreviewProps {
 const Preview: React.FC<PreviewProps> = ({ value }) => {
     const ReactQuill = useMemo(() => dynamic(() => import("react-quill"), { ssr: false }), []);
 
-    return (
-        <div>
-            <ReactQuill theme="bubble" value={value} readOnly />
-        </div>
-    );
+    return <ReactQuill theme="bubble" value={value} readOnly />;
 };
 
 export default Preview;

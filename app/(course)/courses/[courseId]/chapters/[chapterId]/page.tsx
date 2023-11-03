@@ -52,7 +52,7 @@ const ChaptersPage: React.FC<ChaptersPageProps> = async ({ params }) => {
                         {purchase ? <button /> : <CourseEnrollButton courseId={params.courseId} price={course.price} />}
                     </div>
                     <Separator />
-                    <div>
+                    <div className="p-4">
                         <Preview value={chapter.description!} />
                     </div>
                     {!!attachaments.length && (
